@@ -1,0 +1,110 @@
+#view-input, #view-model{
+	display: none;
+}
+
+#title{
+	color: white;
+	font-weight: bold;
+	font-family: 'Fredoka One';
+	font-size: 7em;
+	display: none;
+}
+
+#logo{
+	display: none;
+}
+
+.subtitle{
+	color: white;
+	font-family: 'Fredoka One';
+	font-size: 3em;	
+}
+
+.section-title{
+	font-weight: bold;
+	text-align: center;
+	font-size: 1.5em;
+	font-family: 'Fredoka One';
+	color: #FE5457;
+}
+
+.balloon-input {
+	display: inline-block;
+	padding: 10px 0 10px 15px;
+	font-family: "Fredoka One";
+	font-weight: bold;
+	border: 0;
+	border-radius: 3px;
+	transition: all .3s ease-in-out;
+}
+
+.balloon-input::-webkit-input-placeholder {
+	color: #efefef;
+	font-weight: bold;
+}
+
+.balloon-input + label {
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 8px;
+	padding: 5px 15px;
+	color: #FE5457;
+	background: #FFFFFF;
+	font-size: 1.5em;
+	font-weight: bold;
+	transition: all .3s ease-in-out;
+	border-radius: 5px;
+	user-select: none;
+}
+
+.balloon-input + label:after {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 0;
+	top: 100%;
+	left: 50%;
+	margin-left: -10px;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid transparent;
+	transition: all .3s ease-in-out;
+}
+
+.balloon-input:focus, .balloon-input:active {
+	color: #FE5457;
+}
+
+.balloon-input:focus::-webkit-input-placeholder, .balloon-input:active::-webkit-input-placeholder {
+	color: #AAAAAA;
+}
+
+.balloon-input:focus + label, .balloon-input:active + label {
+	top: 0;
+	color: #FE5457;
+	background: #FFFFFF;
+	padding-bottom: 5px;
+	transform: translateY(-50px);
+}
+
+.balloon-input:focus + label:after, .balloon-input:active + label:after {
+	border-top: 5px solid #FFFFFF;
+}
+
+.balloon-input-container span {
+    position: relative;
+    display: inline-block;
+    margin: 30px 10px;
+}
+
+.view-input select{
+	font-family: "Fredoka One";
+	color: #FE5457 !important;
+	border: none !important;
+	font-size: 1.5em;
+	-moz-appearance:none;
+    -webkit-appearance:none;
+    appearance:none;
+}

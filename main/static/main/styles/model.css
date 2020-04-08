@@ -1,0 +1,33 @@
+#model-container{
+	background-color: #FFFFFF;
+	border-radius: 20px;
+	box-shadow: 0px 10px 25px -10px #000000;
+}
+
+.cell{
+	background-color: #BDBDBD;
+	cursor: pointer;
+	transition: .5s all;
+}
+
+.cell:hover{
+	background-color: #757575;
+}
+
+.fault-point{
+	background-color: black;
+	border-radius: 50%;
+	position: absolute;
+	z-index: 5;
+	cursor: pointer;
+}
+
+.fault-point-selected{
+	background-color: red;
+}
+
+.fault-line{
+	background-color: red;
+	position: absolute;
+	z-index: 2;
+}

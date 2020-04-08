@@ -1,0 +1,82 @@
+body{
+	width: 100vw;
+	min-height: 100vh;
+	overflow-x: hidden;
+	background: linear-gradient(#FE5457, #FE884A);
+	background-repeat: no-repeat;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.btn-main{
+	background: linear-gradient(#FE5457, #FE884A);
+	font-weight: bold;
+	color: #FFFFFF;
+	transition: .5s all;
+	box-shadow: 0 5px 15px -10px #000000 !important;
+	backface-visibility: hidden;
+}
+
+.btn-main:hover{
+	color: #FFFFFF;
+	transform: scale(1.05);
+}
+
+.btn-main:active{
+	box-shadow: 0 5px #666;
+	transform: translateY(4px);
+}
+
+.btn:focus,.btn:active {
+   outline: none !important;
+   box-shadow: none;
+}
+
+.btn-sec{
+	color: #FE5457;
+	font-weight: bold;
+	font-size: 1.5em;
+	border-radius: 20px;
+}
+
+.btn-sec-pressed{
+	background: linear-gradient(#FE5457, #FE884A);
+	color: #FFFFFF;
+}
+
+.btn-sec:hover{
+	color: #FE884A;
+}
+
+.btn-sec-pressed:hover{
+	color: #FFFFFF;
+}
+
+.card{
+	box-shadow: 0 10px 25px -10px #000000 !important;
+	border-radius: 15px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(1, 1, 1, .25);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFFFFF;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFFFFF;
+}

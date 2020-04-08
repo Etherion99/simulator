@@ -1,0 +1,389 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Simulador Black Oil Bidimensional</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'main/styles/main.css' %}">
+	<link rel="stylesheet" href="{% static 'main/styles/intro.css' %}">
+	<link rel="stylesheet" href="{% static 'main/styles/model.css' %}">
+	<link rel="stylesheet" href="{% static 'main/styles/tools.css' %}">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+	<script>
+	    var iconsUrl = "{% static 'main/icons/' %}";
+	</script>
+	<script src="{% static 'main/scripts/intro.js' %}"></script>
+	<script src="{% static 'main/scripts/model.js' %}"></script>
+	<script src="{% static 'main/scripts/tools.js' %}"></script>
+	<script src="{% static 'main/scripts/wells.js' %}"></script>
+	<script src="{% static 'main/scripts/calculations.js' %}"></script>
+</head>
+<body>
+	<!--modals-->
+	<!--modal para editar propiedades de la celda-->
+	<div class="modal" tabindex="-1" role="dialog" id="edit-cell-properties">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header p-2 m-0 d-flex align-items-center">
+					<h5 class="modal-title col p-0 m-0 text-center">Editar propiedades</h5>
+					<button type="button" class="close m-0 p-2" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">&mu; [cP]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center property-input" id="property-vis">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">&Phi; [%]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center property-input" id="property-por">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">C<sub>t</sub> [1/psi]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center property-input" id="property-ct">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">kx [md]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center property-input" id="property-kx">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">ky [md]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center property-input" id="property-ky">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">dx [ft]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center property-input" id="property-dx">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">dy [ft]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center property-input" id="property-dy">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">h [ft]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center property-input" id="property-h">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary" onclick="saveCellProperties()">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--modal para editar las propieades del pozo-->
+	<div class="modal" tabindex="-1" role="dialog" id="edit-well-properties">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header p-2 m-0 d-flex align-items-center">
+					<h5 class="modal-title col p-0 m-0 text-center">Editar Pozo</h5>
+					<button type="button" class="close m-0 p-2" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">Tipo de pozo</p>
+						</div>
+						<div class="col-6">
+							<select class="form-control well-property-input" id="well-type">
+								<option value="0">Sin pozo</option>
+								<option value="1">Productor</option>
+								<option value="2">Inyector</option>
+							</select>
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">P<sub>wf</sub> [psi]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center well-property-input" onblur="changeWellControl('pwf')" id="well-pwf">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">Q [bbl/día]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center well-property-input" onblur="changeWellControl('q')" id="well-q">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">S</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center well-property-input" id="well-s">
+						</div>
+					</div>
+					<div class="row p-3">
+						<div class="col-6">
+							<p class="font-weight-bold text-center col-12 m-0">r<sub>w</sub> [ft]</p>
+						</div>
+						<div class="col-6">
+							<input type="text" class="form-control text-center well-property-input" id="well-rw">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary" onclick="saveWellProperties()">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--intro-->
+	<div class="container-fuild h-100" id="view-intro">
+		<div class="d-flex align-items-center h-100">
+			<div class="container-fluid">
+				<div class="row">
+					<p class="col-12 text-center" id="title">Simulador Bidimensional</p>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-4 d-flex justify-content-center">
+						<img src="{% static 'main/icons/logo.svg' %}" alt="logo" class="img-fluid col-5" id="logo">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--input data-->
+	<div class="container-fluid col-6 offset-3 pt-5 px-0" id="view-input">
+		<div class="row p-0 justify-content-center">
+			<p class="subtitle text-center">Por favor ingresa la siguiente información general para comenzar</p>
+		</div>
+		<div class="d-flex justify-content-center mt-5">
+			<div class="card p-2 col-12 d-flex justify-content-center">
+				<div class="row py-4 justify-content-center">
+					<p class="section-title">Ajustes de la malla</p>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-6 p-0 d-flex justify-content-center">
+						<div class="balloon-input-container">
+							<span>
+								<input type="number" class="form-control form-control-lg balloon-input" placeholder="Filas" id="model-rows" value="4">
+								<label for="model-rows" class="m-0">Filas</label>
+							</span>
+						</div>									
+					</div>
+					<div class="col-6 p-0 d-flex justify-content-center">
+						<div class="balloon-input-container">
+							<span>
+								<input type="number" class="form-control form-control-lg balloon-input" placeholder="Columnas" id="model-columns" value="4">
+								<label for="model-columns" class="m-0">Columnas</label>
+							</span>
+						</div>									
+					</div>
+				</div>
+				<div class="row mt-3 justify-content-center" id="model-delthas">
+					<div class="col-6 p-0 d-flex justify-content-center">
+						<div class="balloon-input-container">
+							<span>
+								<input type="text" class="form-control form-control-lg balloon-input" placeholder="dx [ft]" id="model-dx" onblur="calculateGeneralDeltha('dx', 'dy')" value="500">
+								<label for="model-dx" class="m-0">dx [ft]</label>
+							</span>
+						</div>									
+					</div>
+					<div class="col-6 p-0 d-flex justify-content-center">
+						<div class="balloon-input-container">
+							<span>
+								<input type="text" class="form-control form-control-lg balloon-input" placeholder="dy [ft]" id="model-dy" onblur="calculateGeneralDeltha('dy', 'dx')" value="500">
+								<label for="model-dy" class="m-0">dy [ft]</label>
+							</span>
+						</div>									
+					</div>			
+				</div>
+				<div class="row my-3 justify-content-center">
+					<div class="col-4 d-flex justify-content-center">
+						<button class="btn btn-main" onclick="initModelViewer()">Guardar</button>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</div>
+	
+	<!--model-viewer-->
+	<div class="container-fluid pt-5" id="view-model">
+		<div class="row mt-3">
+			<div class="col-7 row ml-3" id="model-container">
+				<div class="col-2 d-flex justify-content-center p-3">
+					<div class="col-9 d-flex h-100" id="properties-scale"></div>
+				</div>	
+				<div class="col-10 p-3" id="model-viewer"></div>
+			</div>
+			<div class="row col-5 px-5">
+				<div class="col-6">
+					<div class="col-12 py-3">
+						<div class="card tool-card p-3">
+							<button class="btn btn-sec" id="tool-grid">Malla</button>
+						</div>
+					</div>
+					<div class="col-12 py-3">
+						<div class="card tool-card p-3">
+							<button class="btn btn-sec" id="tool-properties">Propiedades</button>
+						</div>
+					</div>
+					<div class="col-12 py-3">
+						<div class="card tool-card p-3">
+							<button class="btn btn-sec" id="tool-wells">Pozos</button>
+						</div>
+					</div>
+					<div class="col-12 py-3">
+						<div class="card tool-card p-3">
+							<button class="btn btn-sec" id="tool-fault">Fallas</button>
+						</div>
+					</div>
+					<div class="col-12 py-3">
+						<div class="card tool-card p-3">
+							<button class="btn btn-sec" id="tool-dates">Fechas</button>
+						</div>
+					</div>
+					<div class="col-12 py-3">
+						<div class="card tool-card p-3">
+							<button class="btn btn-sec" id="tool-simulation">Simulación</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-6">
+					<div class="mh-100 p-3" id="tool-info">
+						<div class="info-panel p-2" id="info-grid">
+							malla Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem qui ipsam aliquam sapiente id, ea, nobis facilis enim neque voluptatem optio? Debitis omnis incidunt error sequi vero itaque, rerum ex!
+						</div>
+						<div class="info-panel p-2" id="info-properties">
+							<dir class="row">
+								<p>Primero selecciona la homogeneidad de tu área de interés</p>
+							</dir>
+							<div class="row justify-content-center mt-4">
+								<div class="col-10">
+									<select class="form-control form-control-lg" id="model-homogeneity" onchange="selectHomogeneity($(this).val())">
+										<option value="">Homogeneidad</option>
+										<option value="0">Heterogéneo</option>
+										<option value="1">Homogéneo</option>
+									</select>
+								</div>
+							</div>
+							<div class="mt-4" id="heterogeneus-info">
+								<p>Selecciona cada celda para indicar sus propiedades de forma independiente</p>
+							</div>
+							<div class="mt-4" id="model-homogeneus-properties">
+								<div class="col-12 p-0 d-flex justify-content-center">
+									<div class="balloon-input-container">
+										<span>
+											<input type="number" class="form-control form-control-lg balloon-input" placeholder="&mu; [cP]" id="homogeneus-vis" value="15">
+											<label for="homogeneus-vis" class="m-0">&mu; [cP]</label>
+										</span>
+									</div>									
+								</div>
+								<div class="col-12 p-0 d-flex justify-content-center">
+									<div class="balloon-input-container">
+										<span>
+											<input type="number" class="form-control form-control-lg balloon-input" placeholder="&Phi;" id="homogeneus-por" value="0.12">
+											<label for="homogeneus-por" class="m-0">&Phi; [%]</label>
+										</span>
+									</div>									
+								</div>
+								<div class="col-12 p-0 d-flex justify-content-center">
+									<div class="balloon-input-container">
+										<span>
+											<input type="number" class="form-control form-control-lg balloon-input" placeholder="Ct [1/psi]" id="homogeneus-ct" value="2e-6">
+											<label for="homogeneus-ct" class="m-0">Ct [1/psi]</label>
+										</span>
+									</div>									
+								</div>
+								<div class="col-12 p-0 d-flex justify-content-center">
+									<div class="balloon-input-container">
+										<span>
+											<input type="number" class="form-control form-control-lg balloon-input" placeholder="kx [md]" id="homogeneus-kx" value="200">
+											<label for="homogeneus-kx" class="m-0">kx [md]</label>
+										</span>
+									</div>									
+								</div>
+								<div class="col-12 p-0 d-flex justify-content-center">
+									<div class="balloon-input-container">
+										<span>
+											<input type="number" class="form-control form-control-lg balloon-input" placeholder="ky [md]" id="homogeneus-ky" value="300">
+											<label for="homogeneus-ky" class="m-0">ky [md]</label>
+										</span>
+									</div>									
+								</div>
+								<div class="col-12 p-0 d-flex justify-content-center">
+									<div class="balloon-input-container">
+										<span>
+											<input type="number" class="form-control form-control-lg balloon-input" placeholder="h [ft]" id="homogeneus-h" value="15">
+											<label for="homogeneus-h" class="m-0">h [ft]</label>
+										</span>
+									</div>									
+								</div>
+								<div class="col-12 p-0 d-flex justify-content-center">
+									<div class="balloon-input-container">
+										<span>
+											<input type="number" class="form-control form-control-lg balloon-input" placeholder="Pi [ft]" id="homogeneus-pi" value="3000">
+											<label for="homogeneus-pi" class="m-0">Pi [psi]</label>
+										</span>
+									</div>									
+								</div>											
+							</div>
+						</div>
+						<div class="info-panel p-2" id="info-wells">
+							<p>Selecciona la celda en la cual quieres colocar/eliminar el pozo o editar su información.</p>
+						</div>
+						<div class="info-panel p-2" id="info-fault">
+							<p>Une los nodos negros entre las celdas para indicar la ubicación de las fallas.<br><br>Para unir los nodos debes seleccionar una pareja de forma consecutiva, puedes dar click sobre un nodo seleccionado para eliminar la selección.<br><br>Para eliminar una falla borrala de la siguiente lista:</p>
+							<div id="faults-list"></div>
+						</div>
+						<div class="info-panel p-2" id="info-dates">
+							Fechas Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi dolores similique, harum id tempora ullam dicta illo facilis vel fugit eaque repellendus saepe hic quas aliquid rem, repudiandae corporis voluptates?
+						</div>
+						<div class="info-panel p-2" id="info-simulation">
+							<button class="btn btn-main" onclick="simulate()">Iniciar simulación</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
